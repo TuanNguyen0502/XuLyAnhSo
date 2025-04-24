@@ -28,10 +28,10 @@ if choice == "🏞 Background Removal (u2netp)":
     from BackgroundRemoval_u2netp_streamlit import app as bg_app
     bg_app.main()
 
-# elif choice == "🔢 Count Objects":
-#     sys.path.append(os.path.join(os.getcwd(), 'CountObject_streamlit'))
-#     from CountObject_streamlit import app as count_app
-#     count_app.main()
+elif choice == "🔢 Count Fruits":
+    sys.path.append(os.path.join(os.getcwd(), 'CountObject_streamlit'))
+    from DemTraiCay_streamlit import dem_trai_cay as count_app
+    count_app.main()
 
 elif choice == "🧮 Solve Quadratic Equation":
     sys.path.append(os.path.join(os.getcwd(), 'GiaiPtBac2_streamlit'))
