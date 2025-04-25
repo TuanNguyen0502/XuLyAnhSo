@@ -53,10 +53,10 @@ elif choice == "🍊 Fruit Detection (YOLOv8)":
     from NhanDangTraiCay_yolov8n_streamlit import nhan_dang_trai_cay as fruit_app
     fruit_app.main()
 
-# elif choice == "🎨 Paint Transfer":
-#     sys.path.append(os.path.join(os.getcwd(), 'PaintTransfer_streamlit'))
-#     import app as paint_app
-#     paint_app.main()
+elif choice == "🎨 Paint Transfer":
+    sys.path.append(os.path.join(os.getcwd(), 'PaintTransfer_streamlit'))
+    from PaintTransfer_streamlit import image_to_art as paint_app
+    paint_app.main()
 
 # elif choice == "📦 Object Detection (YOLOv4)":
 #     sys.path.append(os.path.join(os.getcwd(), 'PhatHienDoiTuong_yolo4_streamlit'))
