@@ -15,8 +15,7 @@ function_list = [
     "🙂 Face Recognition",
     "🍊 Fruit Detection (YOLOv8)",
     "🎨 Paint Transfer",
-    "📦 Object Detection (YOLOv4)",
-    "🖼 Grayscale Image Processing"
+    "📦 Object Detection (YOLOv4)"
 ]
 
 # --- Sidebar Menu ---
@@ -28,7 +27,7 @@ if choice == "🏞 Background Removal (u2netp)":
     from BackgroundRemoval_u2netp_streamlit import app as bg_app
     bg_app.main()
 
-elif choice == "🔢 Count Fruits":
+elif choice == "🔢 Count Objects":
     sys.path.append(os.path.join(os.getcwd(), 'CountObject_streamlit'))
     from DemTraiCay_streamlit import dem_trai_cay as count_app
     count_app.main()
@@ -62,9 +61,3 @@ elif choice == "🎨 Paint Transfer":
 #     sys.path.append(os.path.join(os.getcwd(), 'PhatHienDoiTuong_yolo4_streamlit'))
 #     import Chapter5 as yolo4_app
 #     yolo4_app.main()
-
-# elif choice == "🖼 Grayscale Image Processing":
-#     sys.path.append(os.path.join(os.getcwd(), 'XuLyAnhSo_streamlit'))
-#     import xu_ly_anh_so as gray_app
-#     gray_app.main()
-

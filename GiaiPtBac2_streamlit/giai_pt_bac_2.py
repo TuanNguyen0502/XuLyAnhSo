@@ -1,44 +1,70 @@
 import streamlit as st
 import math
+from typing import Union, Tuple
 
-def main():
-    def gptb2(a, b, c):
-        if a == 0:
-            if b == 0:
-                if c == 0:
-                    ket_qua = 'PTB1 có vô số nghiệm'
-                else:
-                    ket_qua = 'PTB1 vô nghiệm'
-            else:
-                x = -c/b
-                ket_qua = 'PTB1 có nghiệm %.2f' % x
+def solve_quadratic_equation(a: float, b: float, c: float) -> Tuple[str, Union[Tuple[float, float], None]]:
+    """
+    Giải phương trình bậc 2: ax² + bx + c = 0
+    
+    Args:
+        a (float): Hệ số của x²
+        b (float): Hệ số của x
+        c (float): Hệ số tự do
+        
+    Returns:
+        Tuple[str, Union[Tuple[float, float], None]]: Kết quả giải phương trình và nghiệm (nếu có)
+    """
+    # Trường hợp phương trình bậc 1 (a = 0)
+    if a == 0:
+        if b == 0:
+            return 'Phương trình có vô số nghiệm', None
+        x = -c / b
+        return f'Phương trình có nghiệm x = {x:.2f}', (x, None)
+    
+    # Trường hợp phương trình bậc 2 (a ≠ 0)
+    delta = b**2 - 4*a*c
+    if delta < 0:
+        return 'Phương trình vô nghiệm', None
+    
+    x1 = (-b + math.sqrt(delta)) / (2*a)
+    x2 = (-b - math.sqrt(delta)) / (2*a)
+    return f'Phương trình có hai nghiệm: x₁ = {x1:.2f} và x₂ = {x2:.2f}', (x1, x2)
+
+def clear_inputs() -> None:
+    """Xóa tất cả các giá trị nhập vào"""
+    st.session_state["input_a"] = 0.0
+    st.session_state["input_b"] = 0.0
+    st.session_state["input_c"] = 0.0
+
+def main() -> None:
+    """Hàm chính của ứng dụng"""
+    st.title('Giải Phương Trình Bậc 2')
+    st.markdown('---')
+    
+    with st.form(key='equation_form', clear_on_submit=False):
+        st.subheader('Nhập các hệ số')
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            a = st.number_input('Hệ số a', key='input_a', format='%.2f')
+        with col2:
+            b = st.number_input('Hệ số b', key='input_b', format='%.2f')
+        with col3:
+            c = st.number_input('Hệ số c', key='input_c', format='%.2f')
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            solve_button = st.form_submit_button('Giải Phương Trình')
+        with col2:
+            clear_button = st.form_submit_button('Xóa', on_click=clear_inputs)
+        
+        if solve_button:
+            result, _ = solve_quadratic_equation(a, b, c)
+            st.markdown('### Kết quả:')
+            st.success(result)
         else:
-            delta = b**2 - 4*a*c
-            if delta < 0:
-                ket_qua = 'PTB2 vô nghiệm'
-            else:
-                x1 = (-b + math.sqrt(delta))/(2*a)
-                x2 = (-b - math.sqrt(delta))/(2*a)
-                ket_qua = 'PTB2 có nghiệm x1 = %.2f và x2 = %.2f' % (x1, x2)
-        return ket_qua
+            st.markdown('### Kết quả:')
+            st.info('Vui lòng nhập các hệ số và nhấn "Giải Phương Trình"')
 
-    def clear_input():
-        st.session_state["nhap_a"] = 0.0
-        st.session_state["nhap_b"] = 0.0
-        st.session_state["nhap_c"] = 0.0
-
-    st.subheader('Giải phương trình bậc 2')
-    with st.form(key='columns_in_form', clear_on_submit = False):
-        a = st.number_input('Nhập a', key = 'nhap_a')
-        b = st.number_input('Nhập b', key = 'nhap_b')
-        c = st.number_input('Nhập c', key = 'nhap_c')
-        c1, c2 = st.columns(2)
-        with c1:
-            btn_giai = st.form_submit_button('Giải')
-        with c2:
-            btn_xoa = st.form_submit_button('Xóa', on_click=clear_input)
-        if btn_giai:
-            s = gptb2(a, b, c)
-            st.markdown('Kết quả: ' + s)
-        else:
-            st.markdown('Kết quả:')
+if __name__ == '__main__':
+    main()
