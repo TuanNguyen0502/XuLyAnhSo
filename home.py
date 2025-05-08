@@ -35,7 +35,7 @@ elif choice == "🔢 Count Objects":
 
 elif choice == "🧮 Solve Quadratic Equation":
     sys.path.append(os.path.join(os.getcwd(), 'GiaiPtBac2_streamlit'))
-    from GiaiPtBac2_streamlit import giai_pt_bac_2 as quadratic_solver
+    from GiaiPtBac2_streamlit import giai_pt_bac_2_streamlit as quadratic_solver
     quadratic_solver.main()
 
 elif choice == "✍️ Handwritten Digit Recognition":
