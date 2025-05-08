@@ -11,6 +11,7 @@ function_list = [
     "🧮 Solve Quadratic Equation",
     "🙂 Face Recognition",
     "🍊 Fruit Detection (YOLOv8)",
+    "🖼️ Xu Ly Anh So",
     "🔢 Count Objects",
     "✍️ Handwritten Digit Recognition",
     "🖼️ Background Removal (u2netp)",
@@ -55,3 +56,8 @@ elif choice == "🎨 Paint Transfer":
     sys.path.append(os.path.join(os.getcwd(), 'PaintTransfer_streamlit'))
     from PaintTransfer_streamlit import image_to_art as paint_app
     paint_app.main()
+
+elif choice == "🖼️ Xu Ly Anh So":
+    sys.path.append(os.path.join(os.getcwd(), 'XuLyAnhSo'))
+    from XuLyAnhSo import xu_ly_anh_so_streamlit as image_processing_app
+    image_processing_app.main()

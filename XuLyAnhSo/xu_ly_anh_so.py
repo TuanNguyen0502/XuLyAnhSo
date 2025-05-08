@@ -1,7 +1,4 @@
-import tkinter as tk
-from tkinter.filedialog import Open
-from tkinter.filedialog import asksaveasfilename
-
+import streamlit as st
 import cv2
 import numpy as np
 from ultralytics import YOLO
@@ -11,222 +8,151 @@ import Chapter3 as c3
 import Chapter4 as c4
 import Chapter9 as c9
 
-class App(tk.Tk):
-    def	__init__(self):
-        super().__init__()
-        self.title('Xử lý ảnh số')
-        self.geometry('250x320')
-        self.resizable(False, False)
-        self.imgin = None
-        self.imgout = None
-        self.filename = None
+def main():
+    st.title('Xử lý ảnh số')
+    st.sidebar.title('Menu')
 
-        menu = tk.Menu(self)
-        file_menu = tk.Menu(menu, tearoff=0)
-        file_menu.add_command(label="Open Image", command = self.mnu_open_image_click)
-        file_menu.add_command(label="Open Color Image", command = self.mnu_open_color_image_click)
-        
+    uploaded_file = st.sidebar.file_uploader("Choose an image...", type=["jpg", "tif", "bmp", "png", "jpeg", "webp"])
 
-        file_menu.add_command(label="Save Image", command = self.mnu_save_image_click)
+    if uploaded_file is not None:
+        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        imgin = cv2.imdecode(file_bytes, cv2.IMREAD_GRAYSCALE)
+        st.image(imgin, caption='ImageIn', use_column_width=True)
 
-        file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.destroy)
-        menu.add_cascade(label="File", menu=file_menu)
+        tab1, tab2, tab3, tab4 = st.tabs(["Chapter3", "Chapter4", "Chapter9", "Yolo"])
 
-        yolo_menu = tk.Menu(menu, tearoff=0)
-        yolo_menu.add_command(label="Predict", command = self.mnu_yolo_predict_click)
-        menu.add_cascade(label="Yolo", menu=yolo_menu)
+        with tab1:
+            st.header("Chapter3")
+            if st.button("Negative"):
+                imgout = c3.Negative(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-        chapter3_menu = tk.Menu(menu, tearoff=0)
-        chapter3_menu.add_command(label="Negative", command = self.mnu_c3_negative_click)
-        chapter3_menu.add_command(label="Negative Color", command=self.mnu_c3_negative_color_click)
-        chapter3_menu.add_command(label="Logarit", command=self.mnu_c3_logarit_click)
-        chapter3_menu.add_command(label="Power", command=self.mnu_c3_power_click)
-        chapter3_menu.add_command(label="Piecewise Line", command=self.mnu_c3_piecewise_line_click)
-        chapter3_menu.add_command(label="Histogram", command=self.mnu_c3_histogram_click)
-        chapter3_menu.add_command(label="Histogram Equal", command=self.mnu_c3_histogram_equal_click)
-        chapter3_menu.add_command(label="Histogram Equal Color", command=self.mnu_c3_histogram_equal_color_click)
-        chapter3_menu.add_command(label="Local Histogram", command=self.mnu_c3_local_histogram_click)
-        chapter3_menu.add_command(label="Histogram Stat", command=self.mnu_c3_histogram_stat_click)
-        chapter3_menu.add_command(label="Smooth Box", command=self.mnu_c3_smooth_box_click)
-        chapter3_menu.add_command(label="Median Filter", command=self.mnu_c3_median_filter_click)
-        chapter3_menu.add_command(label="Sharp", command=self.mnu_c3_sharp_click)
-        chapter3_menu.add_command(label="Gradient", command=self.mnu_c3_gradient_click)
-        menu.add_cascade(label="Chapter3", menu=chapter3_menu)
+            if st.button("Negative Color"):
+                imgout = c3.NegativeColor(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-        chapter4_menu = tk.Menu(menu, tearoff=0)
-        chapter4_menu.add_command(label="Spectrum", command=self.mnu_c4_spectrum_click)
-        chapter4_menu.add_command(label="Draw Notch Filter", command=self.mnu_c4_draw_notch_filter_click)
-        chapter4_menu.add_command(label="Remove Notch Simple", command=self.mnu_c4_remove_notch_simple_click)
-        chapter4_menu.add_command(label="Draw Notch Period Filter", command=self.mnu_c4_draw_notch_period_filter_click)
-        chapter4_menu.add_command(label="Remove Period Noise", command=self.mnu_c4_remove_period_noise_click)
-        menu.add_cascade(label="Chapter4", menu=chapter4_menu)
+            if st.button("Logarit"):
+                imgout = c3.Logarit(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-        chapter9_menu = tk.Menu(menu, tearoff=0)
-        chapter9_menu.add_command(label="Erosion", command=self.mnu_c9_erosion_click)
-        chapter9_menu.add_command(label="Dilation", command=self.mnu_c9_dilation_click)
-        chapter9_menu.add_command(label="Boundary", command=self.mnu_c9_boundary_click)
-        chapter9_menu.add_command(label="Contour", command=self.mnu_c9_contour_click)
-        chapter9_menu.add_command(label="Convex Hull", command=self.mnu_c9_convex_hull_click)
-        chapter9_menu.add_command(label="Defect Detect", command=self.mnu_c9_defect_detect_click)
-        chapter9_menu.add_command(label="Hole Fill", command=self.mnu_c9_hole_fill_click)
-        chapter9_menu.add_command(label="Connected Components", command=self.mnu_c9_connected_components_click)
-        chapter9_menu.add_command(label="Remove Small Rice", command=self.mnu_c9_remove_small_rice_click)
-        menu.add_cascade(label="Chapter9", menu=chapter9_menu)
+            if st.button("Power"):
+                imgout = c3.PowerLaw(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-        self.config(menu=menu)
+            if st.button("Piecewise Line"):
+                imgout = c3.PiecewiseLine(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-    def mnu_open_image_click(self):
-        ftypes = [('Images', '*.jpg *.tif *.bmp *.png *.jpeg *.webp')]
-        dlg = Open(self, filetypes = ftypes, title = 'Open Image')
-        self.filename = dlg.show()
+            if st.button("Histogram"):
+                imgout = c3.Histogram(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-        if self.filename != '':
-            self.imgin = cv2.imread(self.filename, cv2.IMREAD_GRAYSCALE)
-            cv2.imshow('ImageIn', self.imgin)            
+            if st.button("Histogram Equal"):
+                imgout = c3.HistogramEqualization(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-    def mnu_open_color_image_click(self):
-        ftypes = [('Images', '*.jpg *.tif *.bmp *.png *.jpeg *.webp')]
-        dlg = Open(self, filetypes = ftypes, title = 'Open Image')
-        self.filename = dlg.show()
+            if st.button("Histogram Equal Color"):
+                imgout = c3.HistogramEqualizationColor(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-        if self.filename != '':
-            self.imgin = cv2.imread(self.filename, cv2.IMREAD_COLOR)
-            cv2.imshow('ImageIn', self.imgin)            
+            if st.button("Local Histogram"):
+                imgout = c3.LocalHistogram(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-    def mnu_save_image_click(self):
-        ftypes = [('Images', '*.jpg *.tif *.bmp *.png')]
-        filenameout = asksaveasfilename(title = 'Image Save', filetypes = ftypes, 
-                                initialfile = self.filename) 
-        if filenameout is not None:
-            cv2.imwrite(filenameout, self.imgout)
+            if st.button("Histogram Stat"):
+                imgout = c3.HistStat(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
-    def mnu_yolo_predict_click(self):
-        names = self.model.names
-        self.imgout = self.imgin.copy()
-        annotator = Annotator(self.imgout)
-        results  = self.model.predict(self.imgin, conf = 0.5, verbose=False)
+            if st.button("Smooth Box"):
+                imgout = c3.SmoothBox(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Median Filter"):
+                imgout = cv2.medianBlur(imgin, 3)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Sharp"):
+                imgout = c3.Sharp(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Gradient"):
+                imgout = c3.Gradient(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+        with tab2:
+            st.header("Chapter4")
+            if st.button("Spectrum"):
+                imgout = c4.Spectrum(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Draw Notch Filter"):
+                imgout = c4.DrawNotchFilter(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Remove Notch Simple"):
+                imgout = c4.RemoveNotchSimple(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Draw Notch Period Filter"):
+                imgout = c4.DrawNotchPeriodFilter(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Remove Period Noise"):
+                imgout = c4.RemovePeriodNoise(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+        with tab3:
+            st.header("Chapter9")
+            if st.button("Erosion"):
+                imgout = c9.Erosion(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Dilation"):
+                imgout = c9.Dilation(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Boundary"):
+                imgout = c9.Boundary(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Contour"):
+                imgout = c9.Contour(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Convex Hull"):
+                imgout = c9.ConvexHull(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Defect Detect"):
+                imgout = c9.DefectDetect(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Hole Fill"):
+                imgout = c9.HoleFill(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Connected Components"):
+                imgout = c9.ConnectedComponents(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+            if st.button("Remove Small Rice"):
+                imgout = c9.RemoveSmallRice(imgin)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
+
+        with tab4:
+            st.header("Yolo")
+            if st.button("Predict"):
+                names = model.names
+                imgout = imgin.copy()
+                annotator = Annotator(imgout)
+                results  = model.predict(imgin, conf = 0.5, verbose=False)
 
         boxes = results[0].boxes.xyxy.cpu()
         clss = results[0].boxes.cls.cpu().tolist()
         confs = results[0].boxes.conf.tolist()
         for box, cls, conf in zip(boxes, clss, confs):
             annotator.box_label(box,label = names[int(cls)] + ' %4.2f' % conf , txt_color=(255,0,0), color=(255,255,255))
-        cv2.imshow('ImageOut', self.imgout)  
-
-    def mnu_c3_negative_click(self):
-        self.imgout = c3.Negative(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_negative_color_click(self):
-        self.imgout = c3.NegativeColor(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_logarit_click(self):
-        self.imgout = c3.Logarit(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_power_click(self):
-        self.imgout = c3.PowerLaw(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_piecewise_line_click(self):
-        self.imgout = c3.PiecewiseLine(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_histogram_click(self):
-        self.imgout = c3.Histogram(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_histogram_equal_click(self):
-        self.imgout = c3.HistogramEqualization(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_histogram_equal_color_click(self):
-        self.imgout = c3.HistogramEqualizationColor(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_local_histogram_click(self):
-        self.imgout = c3.LocalHistogram(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_histogram_stat_click(self):
-        self.imgout = c3.HistStat(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_smooth_box_click(self):
-        # self.imgout = cv2.boxFilter(self.imgin, cv2.CV_8UC1, (21, 21))
-        self.imgout = c3.SmoothBox(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_median_filter_click(self):
-        self.imgout = cv2.medianBlur(self.imgin, 3)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_sharp_click(self):
-        self.imgout = c3.Sharp(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c3_gradient_click(self):
-        self.imgout = c3.Gradient(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c4_spectrum_click(self):
-        self.imgout = c4.Spectrum(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c4_draw_notch_filter_click(self):
-        self.imgout = c4.DrawNotchFilter(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c4_remove_notch_simple_click(self):
-        self.imgout = c4.RemoveNotchSimple(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c4_draw_notch_period_filter_click(self):
-        self.imgout = c4.DrawNotchPeriodFilter(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c4_remove_period_noise_click(self):
-        self.imgout = c4.RemovePeriodNoise(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_erosion_click(self):
-        self.imgout = c9.Erosion(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_dilation_click(self):
-        self.imgout = c9.Dilation(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_boundary_click(self):
-        self.imgout = c9.Boundary(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_contour_click(self):
-        self.imgout = c9.Contour(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_convex_hull_click(self):
-        self.imgout = c9.ConvexHull(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_defect_detect_click(self):
-        self.imgout = c9.DefectDetect(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_hole_fill_click(self):
-        self.imgout = c9.HoleFill(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_connected_components_click(self):
-        self.imgout = c9.ConnectedComponents(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
-
-    def mnu_c9_remove_small_rice_click(self):
-        self.imgout = c9.RemoveSmallRice(self.imgin)
-        cv2.imshow('ImageOut', self.imgout)
+                st.image(imgout, caption='ImageOut', use_column_width=True)
 
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    main()
