@@ -57,6 +57,10 @@ class App(tk.Tk):
 
         chapter4_menu = tk.Menu(menu, tearoff=0)
         chapter4_menu.add_command(label="Spectrum", command=self.mnu_c4_spectrum_click)
+        chapter4_menu.add_command(label="Draw Notch Filter", command=self.mnu_c4_draw_notch_filter_click)
+        chapter4_menu.add_command(label="Remove Notch Simple", command=self.mnu_c4_remove_notch_simple_click)
+        chapter4_menu.add_command(label="Draw Notch Period Filter", command=self.mnu_c4_draw_notch_period_filter_click)
+        chapter4_menu.add_command(label="Remove Period Noise", command=self.mnu_c4_remove_period_noise_click)
         # chapter4_menu.add_command(label="Remove Interference", command=self.mnu_c4_remove_interference_click)
         # chapter4_menu.add_command(label="Create Motion", command=self.mnu_c4_create_motion_click)
         # chapter4_menu.add_command(label="Demotion", command=self.mnu_c4_demotion_click)
@@ -166,6 +170,22 @@ class App(tk.Tk):
 
     def mnu_c4_spectrum_click(self):
         self.imgout = c4.Spectrum(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c4_draw_notch_filter_click(self):
+        self.imgout = c4.DrawNotchFilter(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c4_remove_notch_simple_click(self):
+        self.imgout = c4.RemoveNotchSimple(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c4_draw_notch_period_filter_click(self):
+        self.imgout = c4.DrawNotchPeriodFilter(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c4_remove_period_noise_click(self):
+        self.imgout = c4.RemovePeriodNoise(self.imgin)
         cv2.imshow('ImageOut', self.imgout)
 
     def mnu_c5_create_motion_click(self):
