@@ -9,7 +9,6 @@ from ultralytics.utils.plotting import Annotator
 
 import Chapter3 as c3
 import Chapter4 as c4
-import Chapter5 as c5
 import Chapter9 as c9
 
 class App(tk.Tk):
@@ -61,12 +60,16 @@ class App(tk.Tk):
         chapter4_menu.add_command(label="Remove Notch Simple", command=self.mnu_c4_remove_notch_simple_click)
         chapter4_menu.add_command(label="Draw Notch Period Filter", command=self.mnu_c4_draw_notch_period_filter_click)
         chapter4_menu.add_command(label="Remove Period Noise", command=self.mnu_c4_remove_period_noise_click)
-        # chapter4_menu.add_command(label="Remove Interference", command=self.mnu_c4_remove_interference_click)
-        # chapter4_menu.add_command(label="Create Motion", command=self.mnu_c4_create_motion_click)
-        # chapter4_menu.add_command(label="Demotion", command=self.mnu_c4_demotion_click)
         menu.add_cascade(label="Chapter4", menu=chapter4_menu)
 
         chapter9_menu = tk.Menu(menu, tearoff=0)
+        chapter9_menu.add_command(label="Erosion", command=self.mnu_c9_erosion_click)
+        chapter9_menu.add_command(label="Dilation", command=self.mnu_c9_dilation_click)
+        chapter9_menu.add_command(label="Boundary", command=self.mnu_c9_boundary_click)
+        chapter9_menu.add_command(label="Contour", command=self.mnu_c9_contour_click)
+        chapter9_menu.add_command(label="Convex Hull", command=self.mnu_c9_convex_hull_click)
+        chapter9_menu.add_command(label="Defect Detect", command=self.mnu_c9_defect_detect_click)
+        chapter9_menu.add_command(label="Hole Fill", command=self.mnu_c9_hole_fill_click)
         chapter9_menu.add_command(label="Connected Components", command=self.mnu_c9_connected_components_click)
         chapter9_menu.add_command(label="Remove Small Rice", command=self.mnu_c9_remove_small_rice_click)
         menu.add_cascade(label="Chapter9", menu=chapter9_menu)
@@ -188,8 +191,32 @@ class App(tk.Tk):
         self.imgout = c4.RemovePeriodNoise(self.imgin)
         cv2.imshow('ImageOut', self.imgout)
 
-    def mnu_c5_create_motion_click(self):
-        self.imgout = c5.CreateMotion(self.imgin)
+    def mnu_c9_erosion_click(self):
+        self.imgout = c9.Erosion(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c9_dilation_click(self):
+        self.imgout = c9.Dilation(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c9_boundary_click(self):
+        self.imgout = c9.Boundary(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c9_contour_click(self):
+        self.imgout = c9.Contour(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c9_convex_hull_click(self):
+        self.imgout = c9.ConvexHull(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c9_defect_detect_click(self):
+        self.imgout = c9.DefectDetect(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c9_hole_fill_click(self):
+        self.imgout = c9.HoleFill(self.imgin)
         cv2.imshow('ImageOut', self.imgout)
 
     def mnu_c9_connected_components_click(self):
