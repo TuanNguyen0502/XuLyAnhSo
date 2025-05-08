@@ -9,8 +9,9 @@ st.sidebar.title("🧭 22110260 - Nguyen Ha Hong Tuan")
 # --- Function list ---
 function_list = [
     "🧮 Solve Quadratic Equation",
+    "🎯 Object Detection (YOLOv8n)",
     "🙂 Face Recognition",
-    "🍊 Fruit Detection (YOLOv8)",
+    "🍊 Fruit Detection (YOLOv8n)",
     "🖼️ Xu Ly Anh So",
     "🔢 Count Objects",
     "✍️ Handwritten Digit Recognition",
@@ -47,7 +48,7 @@ elif choice == "🙂 Face Recognition":
     from NhanDangKhuonMat_onnx_streamlit import predict as face_app
     face_app.main()
 
-elif choice == "🍊 Fruit Detection (YOLOv8)":
+elif choice == "🍊 Fruit Detection (YOLOv8n)":
     sys.path.append(os.path.join(os.getcwd(), 'NhanDangTraiCay_yolov8n_streamlit'))
     from NhanDangTraiCay_yolov8n_streamlit import nhan_dang_trai_cay as fruit_app
     fruit_app.main()
@@ -61,3 +62,8 @@ elif choice == "🖼️ Xu Ly Anh So":
     sys.path.append(os.path.join(os.getcwd(), 'XuLyAnhSo'))
     from XuLyAnhSo import xu_ly_anh_so_streamlit as image_processing_app
     image_processing_app.main()
+
+elif choice == "🎯 Object Detection (YOLOv8n)":
+    sys.path.append(os.path.join(os.getcwd(), 'PhatHienDoiTuong_yolov8n'))
+    from PhatHienDoiTuong_yolov8n import object_detection_streamlit as object_detection_app
+    object_detection_app.main()
