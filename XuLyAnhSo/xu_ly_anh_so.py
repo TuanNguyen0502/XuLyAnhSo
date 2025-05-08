@@ -50,7 +50,9 @@ class App(tk.Tk):
         chapter3_menu.add_command(label="Local Histogram", command=self.mnu_c3_local_histogram_click)
         chapter3_menu.add_command(label="Histogram Stat", command=self.mnu_c3_histogram_stat_click)
         chapter3_menu.add_command(label="Smooth Box", command=self.mnu_c3_smooth_box_click)
+        chapter3_menu.add_command(label="Median Filter", command=self.mnu_c3_median_filter_click)
         chapter3_menu.add_command(label="Sharp", command=self.mnu_c3_sharp_click)
+        chapter3_menu.add_command(label="Gradient", command=self.mnu_c3_gradient_click)
         menu.add_cascade(label="Chapter3", menu=chapter3_menu)
 
         chapter4_menu = tk.Menu(menu, tearoff=0)
@@ -150,8 +152,16 @@ class App(tk.Tk):
         self.imgout = c3.SmoothBox(self.imgin)
         cv2.imshow('ImageOut', self.imgout)
 
+    def mnu_c3_median_filter_click(self):
+        self.imgout = cv2.medianBlur(self.imgin, 3)
+        cv2.imshow('ImageOut', self.imgout)
+
     def mnu_c3_sharp_click(self):
         self.imgout = c3.Sharp(self.imgin)
+        cv2.imshow('ImageOut', self.imgout)
+
+    def mnu_c3_gradient_click(self):
+        self.imgout = c3.Gradient(self.imgin)
         cv2.imshow('ImageOut', self.imgout)
 
     def mnu_c4_spectrum_click(self):

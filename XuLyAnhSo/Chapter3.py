@@ -194,3 +194,17 @@ def Sharp(imgin):
     imgout = np.clip(imgout, 0, L - 1)
     imgout = imgout.astype(np.uint8)
     return imgout
+
+def Gradient(imgin):
+    # Tính toán gradient của ảnh
+    sobel_x = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], dtype=np.float32)
+    sobel_y = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float32)
+    
+    grad_x = cv2.filter2D(imgin, cv2.CV_32FC1, sobel_x)
+    grad_y = cv2.filter2D(imgin, cv2.CV_32FC1, sobel_y)
+
+    imgout = abs(grad_x) + abs(grad_y)
+    imgout = np.clip(imgout, 0, L - 1)
+    imgout = imgout.astype(np.uint8)
+
+    return imgout
