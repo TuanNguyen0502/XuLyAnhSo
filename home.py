@@ -8,21 +8,20 @@ st.sidebar.title("🧭 22110260 - Nguyen Ha Hong Tuan")
 
 # --- Function list ---
 function_list = [
-    "🏞 Background Removal (u2netp)",
-    "🔢 Count Objects",
     "🧮 Solve Quadratic Equation",
-    "✍️ Handwritten Digit Recognition",
     "🙂 Face Recognition",
     "🍊 Fruit Detection (YOLOv8)",
-    "🎨 Paint Transfer",
-    "📦 Object Detection (YOLOv4)"
+    "🔢 Count Objects",
+    "✍️ Handwritten Digit Recognition",
+    "🖼️ Background Removal (u2netp)",
+    "🎨 Paint Transfer"
 ]
 
 # --- Sidebar Menu ---
 choice = st.sidebar.radio("Select a function:", function_list)
 
 # --- Dynamic importing based on choice ---
-if choice == "🏞 Background Removal (u2netp)":
+if choice == "🖼️ Background Removal (u2netp)":
     sys.path.append(os.path.join(os.getcwd(), 'BackgroundRemoval_u2netp_streamlit'))
     from BackgroundRemoval_u2netp_streamlit import app as bg_app
     bg_app.main()
@@ -56,8 +55,3 @@ elif choice == "🎨 Paint Transfer":
     sys.path.append(os.path.join(os.getcwd(), 'PaintTransfer_streamlit'))
     from PaintTransfer_streamlit import image_to_art as paint_app
     paint_app.main()
-
-# elif choice == "📦 Object Detection (YOLOv4)":
-#     sys.path.append(os.path.join(os.getcwd(), 'PhatHienDoiTuong_yolo4_streamlit'))
-#     import Chapter5 as yolo4_app
-#     yolo4_app.main()
